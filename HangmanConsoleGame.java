@@ -11,22 +11,25 @@ import java.util.Scanner;
  * mistakes allowed (that includes a top hat, head, 2 arms, body, 2 legs, and a cane). No penalty for repeat guesses.
  * 
  * Future additions will be... list of words stored in a text file to be read by the program, GUI for the game that depicts the 
- * Hangman and guessed letters, option menu that allows players to add to the list of words and About Game, enums & difficulty levels, 
- * and more!
+ * Hangman and guessed letters, option menu that allows players to add to the list of words and About Game, enums
+ *  & difficulty levels, and more!
  * @author staudts
  *
  */
 public class HangmanConsoleGame {
-	private static String[] words = {"BALL", "JUMP", "CAT", "DOG", "BANANA", "FISH", "CHIPS", "HOTDOG", "ONOMATOPOEIA", "TRANQUILITY", "SPHYNX",
-			"ZEPHYR"};
-	private static ArrayList<Character> guessedLetters;
+	private static final String[] WORDS = {"BALL", "JUMP", "CAT", "DOG", "BANANA", "FISH", "CHIPS", "HOTDOG", 
+			"ONOMATOPOEIA", "TRANQUILITY", "SPHYNX", "ZEPHYR"};
+	private static final Random GENERATOR = new Random();
+	private static final int MAX_ERRORS = 8;
+	private static ArrayList<Character> guessedLetters = new ArrayList<Character>();
+	// The selected Hangman game word
 	private static String selectedWord;
-	private static Scanner userInput = new Scanner(System.in);
+	private static final Scanner USER_INPUT = new Scanner(System.in);
 	private static int incorrectGuesses;
 	private static int numberOfGuesses;
 	
 	public static void main(String[] args) {
-		Random generator = new Random();
+		
 		char letterGuess;
 		boolean wordGuessed;
 		boolean playAgain;
@@ -40,19 +43,18 @@ public class HangmanConsoleGame {
 		
 		// make a do/while loop if player wants to play again
 		do {
-			wordGuessed = false;
-			guessedLetters = new ArrayList<Character>();
+			guessedLetters.clear();
 			incorrectGuesses = 0;
 			numberOfGuesses = 0;
+			wordGuessed = false;
 			playAgain = false;
-			validResponse = false;
-			
+			validResponse = false;	
 			// Randomly selects word from the word list
-			selectedWord = words[generator.nextInt(words.length)];
+			selectedWord = WORDS[GENERATOR.nextInt(WORDS.length)];
 			
 			
 			
-			while(incorrectGuesses < 8) {
+			while(incorrectGuesses < MAX_ERRORS) {
 				System.out.print("Your word is: ");
 				printWord();
 				
@@ -73,7 +75,7 @@ public class HangmanConsoleGame {
 	
 				
 				
-				System.out.println("Incorrect guesses: " + incorrectGuesses); // prob add to hangman dood method
+				System.out.println("Incorrect guesses: " + incorrectGuesses); 
 			
 			}
 	
@@ -90,7 +92,7 @@ public class HangmanConsoleGame {
 			while (!validResponse) {
 				System.out.print("Play again? Y/N: ");
 			
-				getPlayAgainAnswer = userInput.next().toUpperCase();
+				getPlayAgainAnswer = USER_INPUT.next().toUpperCase();
 			
 				if (getPlayAgainAnswer.equals("Y")) {
 					playAgain = true;
@@ -171,7 +173,7 @@ public class HangmanConsoleGame {
 			
 			// Gets player's guess.
 			System.out.print("Guess a letter: ");
-			guessedLetter = userInput.next().toUpperCase().charAt(0); 	
+			guessedLetter = USER_INPUT.next().toUpperCase().charAt(0); 	
 			System.out.println();
 			// Checks if player's guess is a letter.
 			if (Character.isLetter(guessedLetter)) {
