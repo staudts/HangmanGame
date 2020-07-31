@@ -27,21 +27,27 @@ public class HangmanConsoleGame {
 	private static final Scanner USER_INPUT = new Scanner(System.in);
 	private static int incorrectGuesses;
 	private static int numberOfGuesses;
+	private static char letterGuess;
+	private static boolean wordGuessed;
 	
 	public static void main(String[] args) {
-		
-		char letterGuess;
-		boolean wordGuessed;
+		HangmanConsoleGame game = new HangmanConsoleGame();
+		game.play();
+	}
+	
+	/**
+	 * Plays the Hangman console game.
+	 */
+	public void play() {
 		boolean playAgain;
 		String getPlayAgainAnswer;
 		boolean validResponse;
 		
-		
 		// Welcome message
 		System.out.println("Welcome to Hangman!");
 		System.out.println("Created by staudts in July 2020.\n");
-		
-		// make a do/while loop if player wants to play again
+				
+		// A do/while loop if player wants to play again
 		do {
 			guessedLetters.clear();
 			incorrectGuesses = 0;
@@ -51,13 +57,14 @@ public class HangmanConsoleGame {
 			validResponse = false;	
 			// Randomly selects word from the word list
 			selectedWord = WORDS[GENERATOR.nextInt(WORDS.length)];
-			
-			
-			
+					
+					
+					
 			while(incorrectGuesses < MAX_ERRORS) {
+			
 				System.out.print("Your word is: ");
 				printWord();
-				
+						
 				// Asks player for guess.
 				letterGuess = guessLetter();
 				
@@ -72,13 +79,11 @@ public class HangmanConsoleGame {
 					wordGuessed = true;
 					break;
 				}
-	
 				
-				
-				System.out.println("Incorrect guesses: " + incorrectGuesses); 
-			
+				System.out.println("Incorrect guesses: " + incorrectGuesses); 		
+					
 			}
-	
+			
 			printWord();
 			
 			if (incorrectGuesses < 8 && wordGuessed)
@@ -108,12 +113,13 @@ public class HangmanConsoleGame {
 					validResponse = false;
 					System.out.println("Not a valid response. Try again.");
 				}
-			}	
-			
+			}
+						
+					
 		} while (playAgain);
-		
+				
 		System.out.println("Fin.");
-		
+				
 	}
 	
 	
