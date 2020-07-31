@@ -22,42 +22,41 @@ public class HangmanConsoleGame {
 	private static final Random GENERATOR = new Random();
 	private static final int MAX_ERRORS = 8;
 	private static ArrayList<Character> guessedLetters = new ArrayList<Character>();
-	// The selected Hangman game word
-	private static String selectedWord;
+	private static String selectedWord; 	// The selected Hangman game word
 	private static final Scanner USER_INPUT = new Scanner(System.in);
 	private static int incorrectGuesses;
 	private static int numberOfGuesses;
+	private static char letterGuess;
+	private static boolean wordGuessed;
 	
 	public static void main(String[] args) {
-		
-		char letterGuess;
-		boolean wordGuessed;
-		boolean playAgain;
-		String getPlayAgainAnswer;
-		boolean validResponse;
-		
+		HangmanConsoleGame game = new HangmanConsoleGame();
+		game.play();
+	}
+	
+	/**
+	 * Plays the Hangman console game.
+	 */
+	public void play() {
 		
 		// Welcome message
 		System.out.println("Welcome to Hangman!");
 		System.out.println("Created by staudts in July 2020.\n");
-		
-		// make a do/while loop if player wants to play again
+				
+		// A do/while loop if player wants to play again
 		do {
 			guessedLetters.clear();
 			incorrectGuesses = 0;
 			numberOfGuesses = 0;
 			wordGuessed = false;
-			playAgain = false;
-			validResponse = false;	
 			// Randomly selects word from the word list
 			selectedWord = WORDS[GENERATOR.nextInt(WORDS.length)];
-			
-			
-			
+					
 			while(incorrectGuesses < MAX_ERRORS) {
+			
 				System.out.print("Your word is: ");
 				printWord();
-				
+						
 				// Asks player for guess.
 				letterGuess = guessLetter();
 				
@@ -71,52 +70,26 @@ public class HangmanConsoleGame {
 				if (checkWord()) {
 					wordGuessed = true;
 					break;
-				}
-	
-				
-				
-				System.out.println("Incorrect guesses: " + incorrectGuesses); 
+				}		
+				System.out.println("Incorrect guesses: " + incorrectGuesses); 				
+			}		
 			
-			}
-	
 			printWord();
 			
 			if (incorrectGuesses < 8 && wordGuessed)
 				System.out.println("Congratulations! You are a winner!");
 			else
-				System.out.println("Uh oh. Better luck next time.");
+				System.out.println("Uh oh. Better luck next time.\nThe actual word was: " + selectedWord);
 			
 			System.out.println("You made " + numberOfGuesses + " guesses.\n");
-			
-			// Asks if player wants to play again.
-			while (!validResponse) {
-				System.out.print("Play again? Y/N: ");
-			
-				getPlayAgainAnswer = USER_INPUT.next().toUpperCase();
-			
-				if (getPlayAgainAnswer.equals("Y")) {
-					playAgain = true;
-					validResponse = true;
-					System.out.println();
-				}
-				else if (getPlayAgainAnswer.equals("N")) {
-					playAgain = false;
-					validResponse = true;
-					System.out.println();
-				}
-				else {
-					validResponse = false;
-					System.out.println("Not a valid response. Try again.");
-				}
-			}	
-			
-		} while (playAgain);
-		
+						
+					
+		} while (getPlayAgainAnswer());
+				
 		System.out.println("Fin.");
-		
+				
 	}
-	
-	
+
 	/**
 	 * Prints the Hangman word that reflects the player's most recent guesses.
 	 */
@@ -125,7 +98,6 @@ public class HangmanConsoleGame {
 			for (int i = 0; i < selectedWord.length(); i++)
 				System.out.print("* ");
 		}
-		
 		else {
 			for (int i = 0; i < selectedWord.length(); i++) {
 				boolean letterPresent = false;
@@ -169,8 +141,7 @@ public class HangmanConsoleGame {
 		char guessedLetter = '?';
 		boolean invalidAnswer = true;
 		
-		while (invalidAnswer) {
-			
+		while (invalidAnswer) {	
 			// Gets player's guess.
 			System.out.print("Guess a letter: ");
 			guessedLetter = USER_INPUT.next().toUpperCase().charAt(0); 	
@@ -354,6 +325,38 @@ public class HangmanConsoleGame {
 				break;
 		default: break;
 		}
+	}
+	
+	/**
+	 * Asks if player wants to play again.
+	 * @return true if player wants to play again; otherwise, returns false.
+	 */
+	public boolean getPlayAgainAnswer() {
+		boolean playAgain = false;
+		boolean validResponse = false;
+		char getPlayAgainAnswer;
+		
+		while (!validResponse) {
+			System.out.print("Play again? Y/N: ");
+		
+			getPlayAgainAnswer = USER_INPUT.next().toUpperCase().charAt(0);
+		
+			if (getPlayAgainAnswer == 'Y') {
+				playAgain = true;
+				validResponse = true;
+				System.out.println();
+			}
+			else if (getPlayAgainAnswer == 'N') {
+				playAgain = false;
+				validResponse = true;
+				System.out.println();
+			}
+			else {
+				validResponse = false;
+				System.out.println("Not a valid response. Try again.");
+			}
+		}
+		return playAgain;
 	}
 	
 	
